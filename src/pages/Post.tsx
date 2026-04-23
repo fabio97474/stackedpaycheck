@@ -1,14 +1,28 @@
 import { useParams, Link } from 'react-router-dom'
-import { posts } from '../posts'
+import { useState, useEffect } from 'react'
+import { fetchPosts, Post as PostType } from '../posts'
 
 export default function Post() {
   const { slug } = useParams()
-  const post = posts.find(p => p.slug === slug)
+  const [post, setPost] = useState<PostType | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchPosts().then(posts => {
+      const found = posts.find(p => p.slug === slug)
+      setPost(found || null)
+      setLoading(false)
+    })
+  }, [slug])
+
+  if (loading) return <div style={{ maxWidth: '48rem', margin: '0 auto', padding: '5rem 1.5rem', textAlign: 'center' }}><p style={{ color: '#94a3b8' }}>Loading...</p></div>
   if (!post) return <div style={{ maxWidth: '48rem', margin: '0 auto', padding: '5rem 1.5rem', textAlign: 'center' }}><h1>Post not found</h1><Link to="/blog">← Back to Blog</Link></div>
+
   return (
     <div>
       <section style={{ backgroundColor: '#0D1F3C' }}>
         <div style={{ height: '4px', backgroundColor: '#C9A84C' }} />
+        {post.image && <img src={post.image} alt={post.title} style={{ width: '100%', height: '400px', objectFit: 'cover', opacity: 0.7 }} />}
         <div style={{ maxWidth: '48rem', margin: '0 auto', padding: '3.5rem 1.5rem' }}>
           <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
             {post.categories.map(c => (

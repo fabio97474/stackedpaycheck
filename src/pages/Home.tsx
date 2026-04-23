@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
-import { posts } from '../posts'
+import { useState, useEffect } from 'react'
+import { fetchPosts, Post } from '../posts'
 
 const features = [
   { icon: '💰', title: 'Budget That Works', desc: 'Simple, realistic budgeting frameworks designed around real paychecks.' },
-  { icon: '📈', title: 'Build Savings Fast', desc: 'Step-by-step savings strategies so you\'re ready for anything.' },
+  { icon: '📈', title: 'Build Savings Fast', desc: "Step-by-step savings strategies so you're ready for anything." },
   { icon: '🧱', title: 'Eliminate Debt', desc: 'Proven methods for paying off debt faster — from credit cards to student loans.' },
   { icon: '🌐', title: 'Invest Wisely', desc: 'Clear, jargon-free investing guides for US, UK, Canadian, and Australian readers.' },
 ]
@@ -15,7 +16,12 @@ const testimonials = [
 ]
 
 export default function Home() {
-  const recent = posts.slice(0, 3)
+  const [posts, setPosts] = useState<Post[]>([])
+
+  useEffect(() => {
+    fetchPosts().then(p => setPosts(p.slice(0, 3)))
+  }, [])
+
   return (
     <div>
       <section style={{ backgroundColor: '#0D1F3C' }}>
@@ -64,29 +70,32 @@ export default function Home() {
           <h2 style={{ fontFamily: 'system-ui, sans-serif', fontWeight: 700, fontSize: '1.875rem', color: '#ffffff', marginBottom: '1rem' }}>
             Download the Free <span style={{ color: '#C9A84C' }}>Paycheck Escape Plan</span>
           </h2>
-          <p style={{ color: '#94a3b8', marginBottom: '2rem', lineHeight: 1.7 }}>A step-by-step guide to building your first financial buffer and stopping the paycheck-to-paycheck cycle — for good.</p>
+          <p style={{ color: '#94a3b8', marginBottom: '2rem', lineHeight: 1.7 }}>A step-by-step guide to building your first financial buffer and stopping the paycheck-to-paycheck cycle.</p>
           <a href="https://profitstackio.gumroad.com/l/paycheck-escape-plan" target="_blank" rel="noopener noreferrer" className="btn-primary">Yes, I Want the Free Guide →</a>
         </div>
       </section>
 
-      {recent.length > 0 && (
+      {posts.length > 0 && (
         <section style={{ maxWidth: '1152px', margin: '0 auto', padding: '5rem 1.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2.5rem' }}>
             <h2 style={{ fontFamily: 'system-ui, sans-serif', fontWeight: 700, fontSize: '1.875rem', color: '#0D1F3C' }}>Latest Articles</h2>
             <Link to="/blog" style={{ fontFamily: 'system-ui, sans-serif', fontSize: '0.875rem', fontWeight: 600, color: '#C9A84C', textDecoration: 'none' }}>View all →</Link>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-            {recent.map(post => (
+            {posts.map(post => (
               <Link key={post.slug} to={`/posts/${post.slug}`} style={{ textDecoration: 'none' }}>
-                <article style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '0.5rem', padding: '1.25rem', height: '100%' }}>
-                  <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
-                    {post.categories.slice(0, 2).map(c => (
-                      <span key={c} style={{ fontFamily: 'system-ui, sans-serif', fontSize: '0.75rem', fontWeight: 600, padding: '0.125rem 0.5rem', borderRadius: '0.25rem', backgroundColor: '#f0e8d4', color: '#a8853a' }}>{c}</span>
-                    ))}
+                <article style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '0.5rem', overflow: 'hidden', height: '100%' }}>
+                  {post.image && <img src={post.image} alt={post.title} style={{ width: '100%', height: '160px', objectFit: 'cover' }} />}
+                  <div style={{ padding: '1.25rem' }}>
+                    <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
+                      {post.categories.slice(0, 2).map(c => (
+                        <span key={c} style={{ fontFamily: 'system-ui, sans-serif', fontSize: '0.75rem', fontWeight: 600, padding: '0.125rem 0.5rem', borderRadius: '0.25rem', backgroundColor: '#f0e8d4', color: '#a8853a' }}>{c}</span>
+                      ))}
+                    </div>
+                    <h3 style={{ fontFamily: 'system-ui, sans-serif', fontWeight: 700, fontSize: '1rem', color: '#0D1F3C', marginBottom: '0.5rem', lineHeight: 1.4 }}>{post.title}</h3>
+                    <p style={{ fontSize: '0.875rem', color: '#64748b', lineHeight: 1.6 }}>{post.summary}</p>
+                    <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '0.75rem', color: '#94a3b8', marginTop: '1rem' }}>{post.date}</p>
                   </div>
-                  <h3 style={{ fontFamily: 'system-ui, sans-serif', fontWeight: 700, fontSize: '1rem', color: '#0D1F3C', marginBottom: '0.5rem', lineHeight: 1.4 }}>{post.title}</h3>
-                  <p style={{ fontSize: '0.875rem', color: '#64748b', lineHeight: 1.6 }}>{post.summary}</p>
-                  <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '0.75rem', color: '#94a3b8', marginTop: '1rem' }}>{post.date}</p>
                 </article>
               </Link>
             ))}
