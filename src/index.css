@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy: #0d1f3c;
+  --navy-dark: #091528;
+  --navy-light: #152d56;
+  --gold: #c9a84c;
+  --gold-light: #e0c070;
+  --gold-dark: #a8853a;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  color: #1a1a2e;
+  background-color: #f9f8f5;
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+h1, h2, h3, h4, h5, h6, nav, button, .sans {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.prose h2 { color: var(--navy); margin-top: 2rem; margin-bottom: .75rem; font-family: system-ui, -apple-system, sans-serif; font-size: 1.5rem; font-weight: 700; }
+.prose h3 { color: var(--navy); margin-top: 1.5rem; margin-bottom: .5rem; font-family: system-ui, -apple-system, sans-serif; font-size: 1.2rem; font-weight: 600; }
+.prose p { color: #2d2d44; margin-bottom: 1.25rem; line-height: 1.8; }
+.prose ul, .prose ol { color: #2d2d44; margin: 1rem 0 1.25rem 1.5rem; line-height: 1.8; }
+.prose li { margin-bottom: .4rem; }
+.prose strong { color: var(--navy); }
+.prose blockquote { border-left: 4px solid var(--gold); color: #555; margin: 1.5rem 0; padding-left: 1.25rem; font-style: italic; }
+.prose a { color: var(--gold-dark); text-decoration: underline; }
+
+.btn-primary {
+  background-color: var(--gold);
+  color: var(--navy);
+  letter-spacing: .02em;
+  border-radius: 4px;
+  padding: .875rem 2rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color .2s, transform .1s;
+  display: inline-block;
+}
+.btn-primary:hover { background-color: var(--gold-light); transform: translateY(-1px); }
+
+.btn-secondary {
+  color: var(--gold);
+  border: 2px solid var(--gold);
+  background-color: transparent;
+  border-radius: 4px;
+  padding: .75rem 1.75rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color .2s, color .2s;
+  display: inline-block;
+}
+.btn-secondary:hover { background-color: var(--gold); color: var(--navy); }
