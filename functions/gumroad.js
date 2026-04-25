@@ -1,12 +1,11 @@
 export async function onRequestPost(context) {
   const { request, env } = context;
 
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData.entries());
+  const text = await request.text();
+  const params = new URLSearchParams(text);
+  const data = Object.fromEntries(params.entries());
 
   const email = data.email || data.purchaser_email;
-  const productId = data.product_id;
-  const sellerId = data.seller_id;
 
   if (!email) {
     return new Response("Missing email", { status: 400 });
